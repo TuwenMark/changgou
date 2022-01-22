@@ -2,7 +2,6 @@ package com.changgou.goods.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -11,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author: Mr.Ye
  * @Date: 2021-12-21 06:38
  **/
-@Aspect
+//@Aspect
 @Configuration
 public class MiddlewareAspect {
 //    @Around("execution(* tk.mybatis.mapper.common.base..*.*(..))")

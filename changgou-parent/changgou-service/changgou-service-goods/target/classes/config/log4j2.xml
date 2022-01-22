@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!--自定义常量，之后使用${变量名}引用-->
+        <!-- 配置日志文件输出目录 ${LOG_HOME} -->
+        <Property name="LOG_HOME">/opt/huawei/logs/changgou/goods</Property>
+        <!-- 应用名称,请务必小写（强制），大写会导致es索引建议失败，造成无法存到es中 -->
+        <Property name="appName">demo</Property>
+        <!-- 应用版本，请务必小写（强制），大写会导致es索引建议失败，造成无法存到es中 -->
+        <Property name="version">1.0.0</Property>
+        <!-- 日志输出格式 -->
+        <Property name="patternLayout">%d{yyyy-MM-dd HH:mm:ss:SSS} [%p] - %l - :%m%n</Property>
+    </Properties>
+
+    <!--先定义所有的appender-->
+    <appenders>
+<!--        &lt;!&ndash; 这个会打印出所有的info及以下级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档&ndash;&gt;
+        <RollingFile name="RollingFileInfo" fileName="${sys:user.home}/logs/info.log"
+                     filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            &lt;!&ndash;控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）&ndash;&gt;
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>-->
+        <RollingFile name="file" fileName="${LOG_HOME}/file.log"
+                     filePattern="${LOG_HOME}/%d{yyyy-MM-dd}_file.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="boundary" fileName="${LOG_HOME}/boundary.log"
+                     filePattern="${LOG_HOME}/%d{yyyy-MM-dd}_boundary.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}|%X{tranceId}|%X{uri}|%X{boundary}|%msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <!-- 将日志输出到logstash，由logstash输出到es，然后在Kibana的Logs面板可以实时查看日志
+                host：logstash配置文件中接收数据的地址
+                ignoreExceptions="true"时，代表当前应用会忽略因为gelf产生的相关异常；否则会返回500异常
+         -->
+        <Gelf name="logstash-gelf" host="udp:192.168.124.12" port="4567" version="1.1" ignoreExceptions="true">
+            <!-- 这里只接收info级别的异常 -->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 这里定义的字段，会被logstash接收使用 -->
+            <Field name="timestamp" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}" />
+            <Field name="thread" pattern="%t" />
+            <Field name="logger" pattern="%l" />
+            <Field name="level" pattern="%level" />
+            <Field name="type" pattern="boundary"/>
+            <Field name="tranceId" pattern="%X{tranceId}"/>
+            <Field name="uri" pattern="%X{uri}"/>
+            <Field name="option" pattern="%X{boundary}"/>
+            <Field name="message" pattern="%msg%n"/>
+            <!-- 当前应用所在服务器的系统节点名称 -->
+            <Field name="server" pattern="%host" />
+            <!-- 为当前应用指定es索引名称，在logstash中被应用于创建索引 -->
+            <Field name="index" pattern="changgou-service-goods" />
+        </Gelf>
+<!--
+
+        <Gelf name="logstash-gelf" host="udp:192.168.136.132" port="4567" version="1.1" ignoreExceptions="true">
+            &lt;!&ndash; 这里只接收error级别的异常 &ndash;&gt;
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            &lt;!&ndash; 这里定义的字段，会被logstash接收使用 &ndash;&gt;
+            <Field name="timestamp" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}" />
+            <Field name="thread" pattern="%t" />
+            <Field name="logger" pattern="%l" />
+            <Field name="level" pattern="%level" />
+            &lt;!&ndash; 当前应用所在服务器的系统节点名称 &ndash;&gt;
+            <Field name="server" pattern="%host" />
+            &lt;!&ndash; 为当前应用指定 es索引名称，在logstash中被应用于创建索引 &ndash;&gt;
+            <Field name="run" pattern="log4j2-${appName}-v${version}" />
+        </Gelf>
+-->
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <!--Logger节点用来单独指定日志的形式，name为包路径,比如要为org.springframework包下所有日志指定为INFO级别等。 -->
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="org.mybatis" level="INFO"></logger>
+        <logger name="org.apache" level="INFO"></logger>
+        <logger name="org.hibernate" level="INFO"></logger>
+        <logger name="com.changgou.goods.filter.BoundaryLogFilter" level="INFO" additivity="false">
+<!--            <AppenderRef ref="boundary"/>-->
+            <AppenderRef ref="logstash-gelf"/>
+        </logger>
+        <root level="all">
+            <AppenderRef ref="file" level="INFO"/>
+        </root>
+    </loggers>
+</configuration>

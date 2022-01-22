@@ -17,7 +17,7 @@ import java.util.Map;
  * @Date: 2021-12-19 18:31
  **/
 @RestController
-@RequestMapping("/para")
+@RequestMapping("/goods/para")
 public class ParaController {
     @Autowired
     private ParaService paraService;

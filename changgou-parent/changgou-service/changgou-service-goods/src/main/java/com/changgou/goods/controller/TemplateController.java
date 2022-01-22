@@ -18,7 +18,7 @@ import java.util.Map;
  * @Date: 2021-12-09 23:29
  **/
 @RestController
-@RequestMapping("/template")
+@RequestMapping("/goods/template")
 public class TemplateController {
     @Autowired
     private TemplateService templateService;

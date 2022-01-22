@@ -17,7 +17,7 @@ import java.util.Map;
  * @Date: 2021-12-19 16:51
  **/
 @RestController
-@RequestMapping("/spec")
+@RequestMapping("/goods/spec")
 public class SpecController {
     @Autowired
     private SpecService specService;
