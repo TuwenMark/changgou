@@ -23,8 +23,6 @@ nchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/chang
 xchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/AlbumController.java,9\1\919a04dcaa63d30e0be854f0982ecec40bc7871c
 ¨
 xchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/BrandController.java,f\a\fa441e8d1cc0049c398550d8a46fdc95ab8ead13
-«
-{changgou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/CategoryController.java,7\1\71f6aebe129084105085c16d120174bf412724e0
 §
 wchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/ParaController.java,4\b\4bb3c23228e288eba48bfed0ff2819b709211982
 §
@@ -33,3 +31,9 @@ wchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/chang
 {changgou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/TemplateController.java,1\7\17f9a667615cf35a30087b6ed2794a4462f97f20
 ¥
 uchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/aspect/MiddlewareAspect.java,a\e\ae49bcb7912a2d43684fe75c2c1fafa8e0f5d94f
+¦
+vchanggou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/filter/BoundaryLogFilter.java,5\0\50e9f21b55875d9078ab04e12092e02e1f0a8584
+G
+changgou-parent/pom.xml,9\6\96531cc452ca4732eca700305376e4c5a0b6dea8
+«
+{changgou-parent/changgou-service/changgou-service-goods/src/main/java/com/changgou/goods/controller/CategoryController.java,7\1\71f6aebe129084105085c16d120174bf412724e0
