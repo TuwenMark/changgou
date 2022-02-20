@@ -13,6 +13,7 @@ import java.util.Map;
  * @Date: 2021-12-04 17:32
  **/
 public interface BrandService {
+    List<Brand> findByCategoryId(Integer categoryId);
 
     PageInfo<Brand> findPage(Map brand, Integer pageNum, Integer pageSize);
 

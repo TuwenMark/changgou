@@ -24,6 +24,18 @@ public class TemplateController {
     private TemplateService templateService;
 
     /**
+     * 根据分类的id查询模板信息
+     *
+     * @param categoryId 分类id
+     * @return 模板信息
+     */
+    @GetMapping("/category/{categoryId}")
+    public Result<Template> findByCategoryId(@PathVariable Integer categoryId) {
+        Template template = templateService.findByCategoryId(categoryId);
+        return new Result<>(true, StatusCode.OK, "根据分类id查询模板信息成功！", template);
+    }
+
+    /**
      * 根据主键删除模板
      *
      * @param id 主键

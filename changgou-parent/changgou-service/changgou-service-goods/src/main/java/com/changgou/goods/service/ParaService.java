@@ -12,6 +12,8 @@ import java.util.Map;
  * @Date: 2021-12-19 18:30
  **/
 public interface ParaService {
+    List<Para> findByCategoryId(Integer categoryId);
+
     List<Para> findAll();
 
     Para findById(Integer id);

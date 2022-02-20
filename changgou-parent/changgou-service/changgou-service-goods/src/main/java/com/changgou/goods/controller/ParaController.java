@@ -23,6 +23,18 @@ public class ParaController {
     private ParaService paraService;
 
     /**
+     * 根据分类id查询参数列表
+     *
+     * @param categoryId 分类id
+     * @return 参数列表
+     */
+    @GetMapping("/category/{categoryId}")
+    public Result<List<Para>> findByCategoryId(@PathVariable Integer categoryId) {
+        List<Para> paras = paraService.findByCategoryId(categoryId);
+        return new Result<>(true, StatusCode.OK, "根据分类id查询参数列表成功！", paras);
+    }
+
+    /**
      * 查询所有的参数数据
      *
      * @return 所有的参数数据

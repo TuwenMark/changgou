@@ -13,6 +13,8 @@ import java.util.Map;
  * @Date: 2021-12-09 23:23
  **/
 public interface TemplateService {
+    Template findByCategoryId(Integer categoryId);
+
     void deleteById(Integer id);
 
     void updateById(Template template);

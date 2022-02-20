@@ -23,6 +23,18 @@ public class SpecController {
     private SpecService specService;
 
     /**
+     * 根据分类id查询规格列表
+     *
+     * @param categoryId 分类id
+     * @return 规格列表
+     */
+    @GetMapping("/category/{categoryId}")
+    public Result<List<Spec>> findByCategoryId(@PathVariable Integer categoryId) {
+        List<Spec> specs = specService.findByCategoryId(categoryId);
+        return new Result<>(true, StatusCode.OK, "根据分类id查询规格列表成功！", specs);
+    }
+
+    /**
      * 查询所有规格参数
      *
      * @return 规格参数列表

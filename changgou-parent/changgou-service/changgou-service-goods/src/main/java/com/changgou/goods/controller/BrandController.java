@@ -26,6 +26,18 @@ public class BrandController {
     private BrandService brandService;
 
     /**
+     * 根据分类id查询对应的品牌列表
+     *
+     * @param categoryId 分类id
+     * @return 品牌列表
+     */
+    @GetMapping("/category/{categoryId}")
+    public Result<List<Brand>> findByCategoryId(@PathVariable Integer categoryId) {
+        List<Brand> brands = brandService.findByCategoryId(categoryId);
+        return new Result<>(true, StatusCode.OK, "根据分类id查询品牌信息成功！", brands);
+    }
+
+    /**
      * 根据条件分页查询品牌信息
      *
      * @param brand 品牌查询条件

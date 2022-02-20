@@ -12,6 +12,8 @@ import java.util.Map;
  * @Date: 2021-12-19 16:48
  **/
 public interface SpecService {
+    List<Spec> findByCategoryId(Integer categoryId);
+
     List<Spec> findAll();
 
     Spec findById(Integer id);
