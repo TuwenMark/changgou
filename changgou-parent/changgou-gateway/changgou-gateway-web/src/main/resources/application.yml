@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: gateway-web
+  cloud:
+    gateway:
+      globalcors: # 相当于验证请求
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+        - id: changgou_goods_route    # 唯一标识符，即给当前路由起了个名字
+          #uri: http://localhost:18081    # 用户请求需要路由到该服务（指定要路由到的服务）
+          uri: lb://goods # LoadBalancerClient，客户端负载均衡到com.changgou.goods微服务的集群做负载均衡处理
+          predicates: # 路由断言：路由规则配置
+            #- Host=cloud.itheima.com**    # 用户请求的域名规则配置：所有以cloud.itheima.com（网关域名）的请求都将被路由到http://localhost:18081
+            #- Path=/goods/**
+            - Path=/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/goods/brand
+            - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的facatory，即RequestRateLimiter.class，这里写前面一部分就好
+              args:
+                # 用户身份唯一识别标识符
+                key-resolver: "#{@ipKeyResolver}"
+                # 每秒钟只允许有1个请求【限流的个数】
+                redis-rate-limiter.replenishRate: 1
+                # 允许并发有1个请求【限流+宽限的个数 = 每秒真正可以请求的个数】
+                redis-rate-limiter.burstCapacity: 1
+  #Redis配置
+  redis:
+    host: 192.168.15.133
+    port: 6379
+
+server:
+  port: 8001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true
