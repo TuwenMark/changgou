@@ -5,7 +5,7 @@ spring:
     name: goods
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.136.133:3306/changgou_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT&useSSL=false
+    url: jdbc:mysql://192.168.15.133:3306/changgou_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT&useSSL=false
     username: root
     password: 123456
 eureka:
